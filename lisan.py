@@ -183,6 +183,17 @@ def get_frontmost_app_name() -> "str | None":
         return None
 
 
+def set_target_app(app_name: "str | None") -> None:
+    """
+    Change which app lisan is restricted to, live, even while already
+    running. Pass None (or an empty string) to go back to "all apps".
+    Used by lisan_app.py's "Run in" menu.
+    """
+    global _target_app
+    _target_app = app_name or None
+    print(f"[lisan] target app set to: {_target_app!r}" if _target_app else "[lisan] target app cleared, active for all apps")
+
+
 def is_target_app_active() -> bool:
     """True if lisan should be active for the currently focused app."""
     if not _target_app:

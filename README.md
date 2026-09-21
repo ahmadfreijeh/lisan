@@ -95,14 +95,14 @@ This puts a "لسان" icon in your menu bar with:
   alternate Arabic candidates for that word (e.g. `1. مرحبا`,
   `2. مرحبة`, ...). Click one to swap it in instead of the default —
   same idea as the `F2` hotkey, just clickable.
+- **Run in** — restrict lisan to one app, live (no restart needed):
+  quick picks for **All Apps**, **Notes**, **WhatsApp**, **Messages**,
+  **Mail**, **Safari**, plus **Custom App...** to type any other app
+  name. A checkmark shows the active choice.
 - **Quit** — stops lisan (if running) and exits.
 
 It needs the same Accessibility / Input Monitoring permissions described
 above, granted to whichever Python binary runs `lisan_app.py`.
-
-> The `--app` restriction flag currently only applies to the terminal
-> script (`lisan.py --app ...`); the menu bar app always runs unrestricted
-> for now.
 
 ## Restricting to a specific app
 
