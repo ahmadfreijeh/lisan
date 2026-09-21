@@ -57,10 +57,30 @@
     padding: 10px 14px;
     display: inline-block;
   }
-  .demo-line .ar { direction: rtl; display: inline-block; color: var(--accent); font-weight: 600; }
+  .demo-line .sep { color: var(--border); font-size: 8px; vertical-align: middle; }
+  .demo-line .ar {
+    direction: rtl;
+    display: inline-block;
+    font-weight: 600;
+    background: var(--accent);
+    color: #fff;
+    padding: 1px 8px;
+    border-radius: 4px;
+  }
 
   .links { margin-top: 24px; font-size: 15px; }
   .links a { margin-right: 16px; }
+
+  .motif {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 220px;
+    height: 220px;
+    opacity: 0.9;
+  }
+  header { position: relative; overflow: hidden; }
+  header .header-inner { max-width: 480px; position: relative; z-index: 1; }
 
   section { padding: 40px 0; border-bottom: 1px solid var(--border); }
   section:last-of-type { border-bottom: none; }
@@ -138,17 +158,33 @@
 <div class="wrap">
 
   <header>
-    <div class="logo-row">
-      <span class="logo-arabic">لسان</span>
-      <span class="logo-name">lisan</span>
-    </div>
-    <p class="tagline">A lightweight macOS tool that transliterates Latin-typed words to Arabic instantly, right where you're typing.</p>
+    <svg class="motif" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Abstract geometric motif inspired by Islamic star tessellation, flat solid fills -->
+      <rect x="0" y="0" width="220" height="220" fill="#fafafa" />
+      <g transform="translate(160,60)">
+        <polygon points="0,-40 12,-12 40,0 12,12 0,40 -12,12 -40,0 -12,-12" fill="#0a7d34" />
+      </g>
+      <g transform="translate(90,140) scale(0.6)">
+        <polygon points="0,-40 12,-12 40,0 12,12 0,40 -12,12 -40,0 -12,-12" fill="#1a1a1a" />
+      </g>
+      <g transform="translate(190,160) scale(0.35)">
+        <polygon points="0,-40 12,-12 40,0 12,12 0,40 -12,12 -40,0 -12,-12" fill="#0a7d34" />
+      </g>
+    </svg>
 
-    <div class="demo-line">marhaba <span class="dim">+ Space →</span> <span class="ar">مرحبا</span></div>
+    <div class="header-inner">
+      <div class="logo-row">
+        <span class="logo-arabic">لسان</span>
+        <span class="logo-name">lisan</span>
+      </div>
+      <p class="tagline">A lightweight macOS tool that transliterates Latin-typed words to Arabic instantly, right where you're typing.</p>
 
-    <div class="links">
-      <a href="https://github.com/ahmadfreijeh/lisan">GitHub →</a>
-      <a href="#install">Installation →</a>
+      <div class="demo-line">marhaba <span class="dim">+ Space</span> <span class="sep">■</span> <span class="ar">مرحبا</span></div>
+
+      <div class="links">
+        <a href="https://github.com/ahmadfreijeh/lisan">GitHub</a>
+        <a href="#install">Installation</a>
+      </div>
     </div>
   </header>
 
@@ -175,7 +211,7 @@ pip3 install -r requirements.txt</pre>
       </li>
       <li>
         Grant macOS permissions: Accessibility + Input Monitoring, under
-        System Settings → Privacy &amp; Security, for the exact Python
+        System Settings, Privacy &amp; Security, for the exact Python
         binary running the script (it prints the path on first run).
       </li>
       <li>
