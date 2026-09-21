@@ -7,17 +7,15 @@
 <meta name="description" content="lisan is a lightweight macOS background tool that transliterates Latin-typed words to Arabic on the fly, right where you're typing." />
 <style>
   :root {
-    --bg: #0d1117;
-    --bg-alt: #161b22;
-    --border: #30363d;
-    --text: #e6edf3;
-    --text-dim: #9da7b3;
-    --accent: #2ea043;
-    --accent-2: #d4af37;
-    --code-bg: #010409;
+    --border: #e3e3e3;
+    --text: #1a1a1a;
+    --text-dim: #666;
+    --bg: #ffffff;
+    --bg-soft: #fafafa;
+    --accent: #0a7d34;
+    --code-bg: #f6f6f6;
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
   body {
     margin: 0;
     background: var(--bg);
@@ -25,261 +23,178 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.6;
   }
-  a { color: var(--accent-2); text-decoration: none; }
+  a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
 
-  .wrap { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
 
-  header.hero {
-    padding: 96px 0 64px;
-    text-align: center;
+  header {
+    padding: 64px 0 40px;
     border-bottom: 1px solid var(--border);
-    background:
-      radial-gradient(circle at 20% 20%, rgba(46,160,67,0.12), transparent 40%),
-      radial-gradient(circle at 80% 0%, rgba(212,175,55,0.10), transparent 40%);
   }
-  .logo {
-    font-size: 64px;
-    font-weight: 700;
-    direction: rtl;
-    margin: 0 0 8px;
-    letter-spacing: 2px;
-  }
-  .tagline {
-    font-size: 20px;
-    color: var(--text-dim);
-    margin: 0 0 32px;
-  }
-  .demo {
-    display: inline-flex;
-    align-items: center;
-    gap: 16px;
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 28px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 20px;
+  .logo-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
     flex-wrap: wrap;
-    justify-content: center;
   }
-  .demo .latin { color: var(--text-dim); }
-  .demo .arrow { color: var(--accent); }
-  .demo .arabic { color: var(--accent-2); direction: rtl; font-weight: 600; }
-  .demo .space-hint {
-    font-size: 12px;
+  .logo-arabic { font-size: 36px; direction: rtl; font-weight: 600; }
+  .logo-name { font-size: 22px; color: var(--text-dim); font-weight: 500; }
+  header p.tagline {
+    margin: 12px 0 0;
     color: var(--text-dim);
+    font-size: 17px;
+    max-width: 520px;
+  }
+
+  .demo-line {
+    margin: 24px 0 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 15px;
     background: var(--code-bg);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 3px 8px;
+    padding: 10px 14px;
+    display: inline-block;
   }
+  .demo-line .ar { direction: rtl; display: inline-block; color: var(--accent); font-weight: 600; }
 
-  .cta-row {
-    margin-top: 32px;
+  .links { margin-top: 24px; font-size: 15px; }
+  .links a { margin-right: 16px; }
+
+  section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+  h2 { font-size: 18px; margin: 0 0 16px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-dim); }
+
+  ul.features { list-style: none; margin: 0; padding: 0; }
+  ul.features li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
     display: flex;
     gap: 12px;
+  }
+  ul.features li:last-child { border-bottom: none; }
+  ul.features li .k {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+    color: var(--text-dim);
+    min-width: 88px;
+  }
+  ul.features li .v { color: var(--text); }
+  ul.features li .v .dim { color: var(--text-dim); }
+
+  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+  ol.steps > li {
+    counter-increment: step;
+    padding: 16px 0 16px 40px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  ol.steps > li:last-child { border-bottom: none; }
+  ol.steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--text-dim);
   }
-  .btn {
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 15px;
-  }
-  .btn.primary {
-    background: var(--accent);
-    color: #06210d;
-  }
-  .btn.primary:hover { text-decoration: none; opacity: 0.9; }
-  .btn.secondary {
-    border: 1px solid var(--border);
-    color: var(--text);
-  }
-  .btn.secondary:hover { text-decoration: none; background: var(--bg-alt); }
-
-  section { padding: 64px 0; border-bottom: 1px solid var(--border); }
-  section:last-of-type { border-bottom: none; }
-  h2 {
-    font-size: 28px;
-    margin: 0 0 32px;
-    text-align: center;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-  }
-  .card {
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-  }
-  .card .emoji { font-size: 28px; margin-bottom: 12px; display: block; }
-  .card h3 { margin: 0 0 8px; font-size: 17px; }
-  .card p { margin: 0; color: var(--text-dim); font-size: 14px; }
-
-  ol.steps {
-    max-width: 620px;
-    margin: 0 auto;
-    padding-left: 20px;
-  }
-  ol.steps li { margin-bottom: 16px; color: var(--text-dim); }
-  ol.steps li strong { color: var(--text); }
 
   pre {
     background: var(--code-bg);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 20px;
+    border-radius: 6px;
+    padding: 12px 16px;
     overflow-x: auto;
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 13.5px;
-    color: #a5d6a7;
+    font-size: 13px;
+    margin: 10px 0 0;
   }
   code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
   .inline-code {
     background: var(--code-bg);
     border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 2px 6px;
+    border-radius: 4px;
+    padding: 1px 5px;
     font-size: 13px;
   }
 
-  .menu-mock {
-    max-width: 320px;
-    margin: 0 auto;
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    font-size: 14px;
-  }
-  .menu-mock .row {
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-  }
-  .menu-mock .row:last-child { border-bottom: none; }
-  .menu-mock .row .check { color: var(--accent); }
-  .menu-mock .row.sep { padding: 0; border-bottom: none; height: 1px; background: var(--border); margin: 4px 0; }
-
   footer {
-    padding: 40px 0 80px;
-    text-align: center;
+    padding: 32px 0 64px;
     color: var(--text-dim);
-    font-size: 14px;
+    font-size: 13px;
   }
-  footer a { color: var(--text); }
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="wrap">
-    <p class="logo">لسان</p>
-    <p class="tagline">lisan — type Latin, get Arabic instantly, right where you're typing.</p>
+<div class="wrap">
 
-    <div class="demo">
-      <span class="latin">marhaba</span>
-      <span class="space-hint">Space</span>
-      <span class="arrow">→</span>
-      <span class="arabic">مرحبا</span>
+  <header>
+    <div class="logo-row">
+      <span class="logo-arabic">لسان</span>
+      <span class="logo-name">lisan</span>
     </div>
+    <p class="tagline">A lightweight macOS tool that transliterates Latin-typed words to Arabic instantly, right where you're typing.</p>
 
-    <div class="cta-row">
-      <a class="btn primary" href="https://github.com/ahmadfreijeh/lisan">View on GitHub</a>
-      <a class="btn secondary" href="#install">Installation</a>
-      <a class="btn secondary" href="#features">Features</a>
+    <div class="demo-line">marhaba <span class="dim">+ Space →</span> <span class="ar">مرحبا</span></div>
+
+    <div class="links">
+      <a href="https://github.com/ahmadfreijeh/lisan">GitHub →</a>
+      <a href="#install">Installation →</a>
     </div>
-  </div>
-</header>
+  </header>
 
-<section id="features">
-  <div class="wrap">
-    <h2>What it does</h2>
-    <div class="grid">
-      <div class="card">
-        <span class="emoji">⚡️</span>
-        <h3>Instant, in place</h3>
-        <p>Type a Latin word, hit Space, and it's swapped for Arabic directly in whatever field you're using — no copy/paste.</p>
-      </div>
-      <div class="card">
-        <span class="emoji">…</span>
-        <h3>No lag feeling</h3>
-        <p>An instant "…" placeholder appears the moment you hit Space, then gets replaced once the lookup finishes.</p>
-      </div>
-      <div class="card">
-        <span class="emoji">🔁</span>
-        <h3>Alternate suggestions</h3>
-        <p>Press <code class="inline-code">F2</code> right after a swap to cycle through other Arabic candidates for that word.</p>
-      </div>
-      <div class="card">
-        <span class="emoji">🧭</span>
-        <h3>Menu bar app</h3>
-        <p>Run it as a toggleable menu bar icon instead of a terminal script — Start/Stop whenever you want.</p>
-      </div>
-      <div class="card">
-        <span class="emoji">🎯</span>
-        <h3>Restrict to one app</h3>
-        <p>Only want it active in WhatsApp or Notes? Pick from the menu, or pass <code class="inline-code">--app</code> on the CLI.</p>
-      </div>
-      <div class="card">
-        <span class="emoji">🔒</span>
-        <h3>No clipboard, no cloud storage</h3>
-        <p>Text is swapped via direct keystroke simulation. Only the typed word itself is sent to Yamli for transliteration.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  <section>
+    <h2>Features</h2>
+    <ul class="features">
+      <li><span class="k">Instant swap</span><span class="v">Type a word, hit Space — it's replaced with Arabic directly in the field, no copy/paste.</span></li>
+      <li><span class="k">No lag</span><span class="v">A "…" placeholder appears immediately while the lookup runs, then gets replaced.</span></li>
+      <li><span class="k">Suggestions</span><span class="v">Press <code class="inline-code">F2</code> right after a swap to cycle through alternate Arabic candidates.</span></li>
+      <li><span class="k">Menu bar app</span><span class="v">Toggle lisan on/off from a menu bar icon, no terminal needed.</span></li>
+      <li><span class="k">App filter</span><span class="v">Restrict it to one app (e.g. WhatsApp, Notes) via the menu or <code class="inline-code">--app</code>.</span></li>
+      <li><span class="k">Private</span><span class="v">No clipboard, no storage — only the typed word is sent to Yamli for transliteration.</span></li>
+    </ul>
+  </section>
 
-<section>
-  <div class="wrap">
-    <h2>Menu bar app preview</h2>
-    <div class="menu-mock">
-      <div class="row"><span>لسان</span><span></span></div>
-      <div class="row sep"></div>
-      <div class="row"><span>Stop</span></div>
-      <div class="row sep"></div>
-      <div class="row"><span>Run in: WhatsApp ▸</span></div>
-      <div class="row sep"></div>
-      <div class="row"><span>Suggestions (3) ▸</span></div>
-      <div class="row sep"></div>
-      <div class="row"><span>Quit</span></div>
-    </div>
-  </div>
-</section>
-
-<section id="install">
-  <div class="wrap">
+  <section id="install">
     <h2>Installation</h2>
     <ol class="steps">
-      <li><strong>Clone the repo</strong> and install dependencies:
+      <li>
+        Clone the repo and install dependencies.
         <pre>git clone https://github.com/ahmadfreijeh/lisan.git
 cd lisan
 pip3 install -r requirements.txt</pre>
       </li>
-      <li><strong>Grant macOS permissions.</strong> lisan needs Accessibility + Input Monitoring access (System Settings → Privacy &amp; Security) for the exact Python binary running it — the script prints the exact path to add.</li>
-      <li><strong>Run it</strong> — either as a menu bar app, or straight from the terminal:
-        <pre>python3 lisan_app.py     # menu bar app, with Start/Stop + suggestions
-python3 lisan.py         # terminal script
-python3 lisan.py --app Notes   # restrict to one app</pre>
+      <li>
+        Grant macOS permissions: Accessibility + Input Monitoring, under
+        System Settings → Privacy &amp; Security, for the exact Python
+        binary running the script (it prints the path on first run).
       </li>
-      <li><strong>Type and go.</strong> Type a Latin word (e.g. <code class="inline-code">marhaba</code>), press Space, and it becomes Arabic where you're typing.</li>
+      <li>
+        Run it.
+        <pre>python3 lisan_app.py          # menu bar app
+python3 lisan.py              # terminal script
+python3 lisan.py --app Notes  # restrict to one app</pre>
+      </li>
+      <li>
+        Type a Latin word (e.g. <code class="inline-code">marhaba</code>), press Space — it becomes Arabic.
+      </li>
     </ol>
-  </div>
-</section>
+  </section>
 
-<footer>
-  <div class="wrap">
-    <p>lisan is open source — <a href="https://github.com/ahmadfreijeh/lisan">source, issues &amp; docs on GitHub</a>.</p>
-  </div>
-</footer>
+  <footer>
+    lisan is open source — <a href="https://github.com/ahmadfreijeh/lisan">source &amp; docs on GitHub</a>.
+  </footer>
+
+</div>
 
 </body>
 </html>
