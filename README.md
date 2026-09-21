@@ -7,7 +7,7 @@ text field you're typing in (Notes, WhatsApp, Messages, browser, etc.).
 
 Type `marhaba` + `Space` → it becomes `مرحبا`, right where you were typing.
 
-![lisan demo](docs/demo.mp4)
+![lisan demo](docs/demo.gif)
 
 🌐 **[Docs](https://ahmadfreijeh.github.io/lisan/)**
 
