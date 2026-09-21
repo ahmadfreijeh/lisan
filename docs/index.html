@@ -3,52 +3,41 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>lisan (لسان) — Type Latin, get Arabic instantly</title>
-<meta name="description" content="lisan is a lightweight macOS background tool that transliterates Latin-typed words to Arabic on the fly, right where you're typing." />
+<title>lisan (لسان) — type Arabic with your Latin keyboard, on macOS</title>
+<meta name="description" content="lisan is a small macOS app that turns Latin-typed words into Arabic as you type. Write marhaba, press Space, get مرحبا — in Notes, WhatsApp, Mail, or any text field." />
 <style>
   :root {
-    --border: #e3e3e3;
-    --text: #1a1a1a;
-    --text-dim: #666;
+    --border: #dcdcdc;
+    --text: #17181a;
+    --text-dim: #5d6166;
     --bg: #ffffff;
-    --bg-soft: #fafafa;
-    --accent: #0a7d34;
-    --code-bg: #f6f6f6;
+    --accent: #0a6c2f;
+    --code-bg: #f4f5f6;
   }
   * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.6;
+    font-size: 16px;
+    line-height: 1.65;
   }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
+  a { color: var(--accent); }
+  a:hover { text-decoration: none; }
 
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: 660px; margin: 0 auto; padding: 0 22px; }
 
-  header {
-    padding: 64px 0 40px;
-    border-bottom: 1px solid var(--border);
-  }
-  .logo-row {
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-  .logo-arabic { font-size: 36px; direction: rtl; font-weight: 600; }
-  .logo-name { font-size: 22px; color: var(--text-dim); font-weight: 500; }
-  header p.tagline {
-    margin: 12px 0 0;
-    color: var(--text-dim);
-    font-size: 17px;
-    max-width: 520px;
-  }
+  header { padding: 56px 0 28px; }
+  .logo-row { display: flex; align-items: baseline; gap: 12px; }
+  .logo-arabic { font-size: 30px; direction: rtl; font-weight: 600; }
+  .logo-name { font-size: 20px; color: var(--text-dim); }
+  .tagline { margin: 14px 0 0; font-size: 18px; }
+  .sub { margin: 10px 0 0; color: var(--text-dim); }
 
-  .demo-line {
-    margin: 24px 0 0;
+  .demo {
+    margin: 22px 0 0;
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-size: 15px;
     background: var(--code-bg);
@@ -57,99 +46,70 @@
     padding: 10px 14px;
     display: inline-block;
   }
-  .demo-line .sep { color: var(--border); font-size: 8px; vertical-align: middle; }
-  .demo-line .ar {
-    direction: rtl;
-    display: inline-block;
-    font-weight: 600;
-    background: var(--accent);
-    color: #fff;
-    padding: 1px 8px;
-    border-radius: 4px;
-  }
+  .demo .dim { color: var(--text-dim); }
+  .demo .ar { direction: rtl; display: inline-block; font-weight: 600; }
+  .ar-ex { direction: rtl; display: inline-block; font-weight: 600; }
 
-  .links { margin-top: 24px; font-size: 15px; }
-  .links a { margin-right: 16px; }
+  nav.toc { margin: 26px 0 0; font-size: 15px; }
+  nav.toc a { margin-right: 18px; white-space: nowrap; }
 
-  .motif {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 220px;
-    height: 220px;
-    opacity: 0.9;
-  }
-  header { position: relative; overflow: hidden; }
-  header .header-inner { max-width: 480px; position: relative; z-index: 1; }
+  section { padding: 30px 0 4px; border-top: 1px solid var(--border); margin-top: 26px; }
+  h2 { font-size: 20px; margin: 0 0 10px; }
+  h3 { font-size: 16px; margin: 24px 0 4px; }
+  p { margin: 10px 0; }
 
-  section { padding: 40px 0; border-bottom: 1px solid var(--border); }
-  section:last-of-type { border-bottom: none; }
-  h2 { font-size: 18px; margin: 0 0 16px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-dim); }
-
-  ul.features { list-style: none; margin: 0; padding: 0; }
-  ul.features li {
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 12px;
-  }
-  ul.features li:last-child { border-bottom: none; }
-  ul.features li .k {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 13px;
-    color: var(--text-dim);
-    min-width: 88px;
-  }
-  ul.features li .v { color: var(--text); }
-  ul.features li .v .dim { color: var(--text-dim); }
-
-  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
-  ol.steps > li {
-    counter-increment: step;
-    padding: 16px 0 16px 40px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-  ol.steps > li:last-child { border-bottom: none; }
-  ol.steps > li::before {
-    content: counter(step);
-    position: absolute;
-    left: 0;
-    top: 16px;
-    width: 24px;
-    height: 24px;
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: var(--text-dim);
-  }
+  ul, ol { margin: 10px 0; padding-left: 22px; }
+  li { margin: 6px 0; }
+  li > strong { font-weight: 600; }
 
   pre {
     background: var(--code-bg);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 12px 16px;
+    padding: 12px 14px;
     overflow-x: auto;
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 13px;
-    margin: 10px 0 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin: 12px 0;
   }
-  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-  .inline-code {
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.88em;
+  }
+  p code, li code, td code {
     background: var(--code-bg);
     border: 1px solid var(--border);
     border-radius: 4px;
     padding: 1px 5px;
+  }
+  kbd {
+    font-family: inherit;
     font-size: 13px;
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 1px 6px;
+    background: var(--code-bg);
+  }
+
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 15px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { color: var(--text-dim); font-weight: 600; }
+
+  .note {
+    border-left: 3px solid var(--border);
+    padding: 2px 0 2px 14px;
+    margin: 14px 0;
+    color: var(--text-dim);
   }
 
   footer {
-    padding: 32px 0 64px;
+    padding: 28px 0 60px;
+    margin-top: 26px;
+    border-top: 1px solid var(--border);
     color: var(--text-dim);
-    font-size: 13px;
+    font-size: 14px;
   }
 </style>
 </head>
@@ -158,76 +118,144 @@
 <div class="wrap">
 
   <header>
-    <svg class="motif" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Abstract geometric motif inspired by Islamic star tessellation, flat solid fills -->
-      <rect x="0" y="0" width="220" height="220" fill="#fafafa" />
-      <g transform="translate(160,60)">
-        <polygon points="0,-40 12,-12 40,0 12,12 0,40 -12,12 -40,0 -12,-12" fill="#0a7d34" />
-      </g>
-      <g transform="translate(90,140) scale(0.6)">
-        <polygon points="0,-40 12,-12 40,0 12,12 0,40 -12,12 -40,0 -12,-12" fill="#1a1a1a" />
-      </g>
-      <g transform="translate(190,160) scale(0.35)">
-        <polygon points="0,-40 12,-12 40,0 12,12 0,40 -12,12 -40,0 -12,-12" fill="#0a7d34" />
-      </g>
-    </svg>
-
-    <div class="header-inner">
-      <div class="logo-row">
-        <span class="logo-arabic">لسان</span>
-        <span class="logo-name">lisan</span>
-      </div>
-      <p class="tagline">A lightweight macOS tool that transliterates Latin-typed words to Arabic instantly, right where you're typing.</p>
-
-      <div class="demo-line">marhaba <span class="dim">+ Space</span> <span class="sep">■</span> <span class="ar">مرحبا</span></div>
-
-      <div class="links">
-        <a href="https://github.com/ahmadfreijeh/lisan" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="#install">Installation</a>
-      </div>
+    <div class="logo-row">
+      <span class="logo-arabic">لسان</span>
+      <span class="logo-name">lisan</span>
     </div>
+
+    <p class="tagline">Type Arabic using your normal Latin keyboard, in any macOS app.</p>
+    <p class="sub">Write a word the way it sounds, press Space, and lisan replaces it with the Arabic
+    spelling right where your cursor is — no copy/paste, no switching keyboard layouts.</p>
+
+    <div class="demo">marhaba <span class="dim">+ Space</span> → <span class="ar">مرحبا</span></div>
+
+    <nav class="toc">
+      <a href="#install">Install</a>
+      <a href="#usage">How to use</a>
+      <a href="#menu">Menu bar</a>
+      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="https://github.com/ahmadfreijeh/lisan" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
   </header>
 
-  <section>
-    <h2>Features</h2>
-    <ul class="features">
-      <li><span class="k">Instant swap</span><span class="v">Type a word, hit Space — it's replaced with Arabic directly in the field, no copy/paste.</span></li>
-      <li><span class="k">No lag</span><span class="v">A "…" placeholder appears immediately while the lookup runs, then gets replaced.</span></li>
-      <li><span class="k">Suggestions</span><span class="v">Press <code class="inline-code">F2</code> right after a swap to cycle through alternate Arabic candidates.</span></li>
-      <li><span class="k">Menu bar app</span><span class="v">Toggle lisan on/off from a menu bar icon, no terminal needed.</span></li>
-      <li><span class="k">App filter</span><span class="v">Restrict it to one app (e.g. WhatsApp, Notes) via the menu or <code class="inline-code">--app</code>.</span></li>
-      <li><span class="k">Private</span><span class="v">No clipboard, no storage — only the typed word is sent to Yamli for transliteration.</span></li>
+  <section id="what">
+    <h2>What you get</h2>
+    <ul>
+      <li><strong>Works everywhere.</strong> Notes, WhatsApp, Messages, Mail, Safari, and any other text field.</li>
+      <li><strong>Type as it sounds.</strong> <code>shukran</code> gives <span class="ar-ex">شكرا</span>, <code>kitaab</code> gives <span class="ar-ex">كتاب</span> — one word at a time, as you go.</li>
+      <li><strong>Other spellings.</strong> If the Arabic word isn't the one you meant, press <kbd>F2</kbd> to cycle through alternatives.</li>
+      <li><strong>On/off whenever you want.</strong> A menu bar icon starts and stops it; it does nothing while stopped.</li>
+      <li><strong>One app only, if you prefer.</strong> Limit lisan to a single app, like WhatsApp.</li>
+      <li><strong>Nothing is saved.</strong> Only the word you just typed is sent to Yamli to be converted. No clipboard, no history, no account.</li>
     </ul>
+    <p>You need macOS and Python 3.9 or newer. Check with <code>python3 --version</code> in Terminal.</p>
   </section>
 
   <section id="install">
-    <h2>Installation</h2>
-    <ol class="steps">
-      <li>
-        Clone the repo and install dependencies.
-        <pre>git clone https://github.com/ahmadfreijeh/lisan.git
+    <h2>Install</h2>
+
+    <h3>1. Download lisan</h3>
+    <p>Open Terminal and paste these lines, one at a time:</p>
+<pre>git clone https://github.com/ahmadfreijeh/lisan.git
 cd lisan
 pip3 install -r requirements.txt</pre>
-      </li>
-      <li>
-        Grant macOS permissions: Accessibility + Input Monitoring, under
-        System Settings, Privacy &amp; Security, for the exact Python
-        binary running the script (it prints the path on first run).
-      </li>
-      <li>
-        Run it.
-        <pre>python3 lisan_app.py          # menu bar app
-python3 lisan.py              # terminal script
-python3 lisan.py --app Notes  # restrict to one app</pre>
-      </li>
-      <li>
-        Type a Latin word (e.g. <code class="inline-code">marhaba</code>), press Space — it becomes Arabic.
-      </li>
-    </ol>
+
+    <h3>2. Start it</h3>
+<pre>python3 lisan_app.py</pre>
+    <p>A <span class="logo-arabic" style="font-size:16px">لسان</span> icon appears in your menu bar.
+    The first run prints a file path in Terminal that looks like
+    <code>/usr/local/bin/python3</code> — keep that window open, you need the path in the next step.</p>
+
+    <h3>3. Give it permission to type for you</h3>
+    <p>macOS has to allow lisan to read your keystrokes and type the Arabic word back. Open
+    <strong>System Settings → Privacy &amp; Security</strong> and add the path from step 2 in
+    <em>both</em> of these places:</p>
+    <ul>
+      <li><strong>Accessibility</strong></li>
+      <li><strong>Input Monitoring</strong></li>
+    </ul>
+    <p>In the file picker, press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd> and paste the path —
+    these Python files are normally hidden.</p>
+    <p>Then quit lisan and start it again. macOS only checks permissions when an app launches.</p>
+
+    <h3>4. Try it</h3>
+    <p>Click the menu bar icon, choose <strong>Start</strong>, open Notes, type
+    <code>marhaba</code> and press Space.</p>
+  </section>
+
+  <section id="usage">
+    <h2>How to use it</h2>
+    <table>
+      <tr><th>You do this</th><th>What happens</th></tr>
+      <tr><td>Type a word, press <kbd>Space</kbd></td><td>The Latin word is replaced with Arabic, followed by a space.</td></tr>
+      <tr><td>Press <kbd>F2</kbd> right after</td><td>Swaps in the next possible Arabic spelling. Keep pressing to keep cycling.</td></tr>
+      <tr><td>Type punctuation, Enter, or an arrow key</td><td>Ends the current word. Nothing is converted.</td></tr>
+      <tr><td>Press <kbd>Space</kbd> twice</td><td>Nothing to convert, so you just get a space.</td></tr>
+    </table>
+    <p>You'll see a short <code>…</code> in place of your word while lisan looks it up. It disappears
+    once the Arabic arrives, usually instantly. If no Arabic match is found, your original word
+    comes back unchanged.</p>
+    <p class="note"><kbd>F2</kbd> only works immediately after a swap. Once you type something else,
+    lisan no longer knows where that word was.</p>
+  </section>
+
+  <section id="menu">
+    <h2>The menu bar icon</h2>
+    <table>
+      <tr><th>Menu item</th><th>What it does</th></tr>
+      <tr><td>Start / Stop</td><td>Turns lisan on and off. It ignores your typing completely while stopped.</td></tr>
+      <tr><td>Run in</td><td>Limits lisan to one app — All Apps, Notes, WhatsApp, Messages, Mail, Safari, or <em>Custom App…</em> for anything else. Takes effect right away.</td></tr>
+      <tr><td>Suggestions</td><td>Lists the other Arabic spellings for the word you just converted. Click one to use it instead of pressing <kbd>F2</kbd>.</td></tr>
+      <tr><td>Quit</td><td>Stops lisan and closes the app.</td></tr>
+    </table>
+    <p>A checkmark in <strong>Run in</strong> shows which app is currently active. The icon shows a
+    checkmark when lisan is running.</p>
+
+    <h3>Prefer the Terminal?</h3>
+    <p>You can run lisan without the menu bar app. It starts working immediately and stops with
+    <kbd>Ctrl</kbd> + <kbd>C</kbd>.</p>
+<pre>python3 lisan.py                  # active in every app
+python3 lisan.py --app Notes      # only while Notes is in front
+python3 lisan.py -a WhatsApp      # only while WhatsApp is in front</pre>
+    <p>App names are matched loosely and ignore capitalisation, so <code>-a whats</code> also works.</p>
+  </section>
+
+  <section id="troubleshooting">
+    <h2>Troubleshooting</h2>
+
+    <h3>Nothing happens when I press Space</h3>
+    <p>This is almost always the permissions step. Confirm the exact Python path printed in Terminal
+    is listed under both Accessibility and Input Monitoring, and that the switch next to it is on.
+    Then quit lisan and start it again.</p>
+
+    <h3>It worked yesterday and stopped today</h3>
+    <p>If you updated macOS or Python, the old path may no longer match. Start lisan, read the new
+    path it prints, and add that one.</p>
+
+    <h3>It does nothing in a password field</h3>
+    <p>Expected. macOS blocks all apps from typing into secure fields. lisan can't work there, and
+    shouldn't.</p>
+
+    <h3>I get the wrong Arabic word</h3>
+    <p>Press <kbd>F2</kbd> or use the <strong>Suggestions</strong> menu. It also helps to spell the
+    word closer to how it sounds — <code>kitaab</code> tends to work better than <code>ktb</code>.</p>
+
+    <h3>It converts words when I don't want it to</h3>
+    <p>Click <strong>Stop</strong>, or use <strong>Run in</strong> to limit lisan to the one app where
+    you write Arabic.</p>
+  </section>
+
+  <section id="privacy">
+    <h2>Privacy</h2>
+    <p>lisan runs on your Mac and watches keystrokes only while it's started. When you press Space,
+    the single word you typed is sent to <a href="https://www.yamli.com/" target="_blank" rel="noopener noreferrer">Yamli</a>
+    to get the Arabic spelling. Nothing is written to disk, nothing goes to the clipboard, and there
+    is no account or sign-in.</p>
   </section>
 
   <footer>
-    lisan is open source — <a href="https://github.com/ahmadfreijeh/lisan" target="_blank" rel="noopener noreferrer">source &amp; docs on GitHub</a>.
+    lisan is free and open source. Read the code, report a problem, or suggest a change on
+    <a href="https://github.com/ahmadfreijeh/lisan" target="_blank" rel="noopener noreferrer">GitHub</a>.
   </footer>
 
 </div>
