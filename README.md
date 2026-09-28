@@ -46,8 +46,9 @@ Use **Run in** to limit either mode to one app.
 
 ## OpenAI key
 
-For Polish, paste your key into `OPENAI_API_KEY` in `lisan_polish.py`.
-The model is also set there and defaults to `gpt-5.4-mini`.
+Copy `.env.example` to `.env`, then add your key to `OPENAI_API_KEY`.
+The `.env` file is ignored by Git. The model is set in `lisan_polish.py` and
+defaults to `gpt-5.4-mini`.
 
 ## Safety
 

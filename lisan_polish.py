@@ -6,12 +6,13 @@ import threading
 
 from openai import OpenAI
 from pynput.keyboard import Key
+from dotenv import load_dotenv
 
 from lisan_input import TextInjector
 
-# For local-only use, paste your API key here. Keep this empty to read
-# OPENAI_API_KEY from the environment instead.
-OPENAI_API_KEY = ""
+# Load local secrets from .env when lisan starts.
+load_dotenv()
+
 # Keep the model local and static. Mini provides noticeably stronger writing
 # quality than Nano while remaining fast enough for an inline rewrite.
 OPENAI_MODEL = "gpt-5.4-mini"
@@ -110,7 +111,7 @@ class SentencePolisher:
 
     def _request(self, sentence: str, revision: int, origin_app: "str | None") -> None:
         try:
-            api_key = OPENAI_API_KEY or os.environ.get("OPENAI_API_KEY")
+            api_key = os.environ.get("OPENAI_API_KEY")
             if not api_key:
                 print("[lisan] polish skipped: OPENAI_API_KEY is not set", file=sys.stderr)
                 return
