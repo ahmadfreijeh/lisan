@@ -2,3 +2,4 @@ pynput
 requests
 urllib3
 rumps
+openai

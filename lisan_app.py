@@ -8,10 +8,11 @@ a terminal, this puts a small icon in your menu bar with:
   - A Start/Stop toggle, so lisan only runs while you want it to.
   - A "Suggestions" submenu showing the alternate Arabic candidates for the
     last word you swapped -- click one to pick it instead of the default.
+  - A mode picker for Arabic transliteration or OpenAI sentence polishing.
 
 REQUIREMENTS
 ------------
-    pip3 install -r requirements.txt   # includes rumps, pynput, requests
+    pip3 install -r requirements.txt   # includes rumps, pynput, requests, openai
 
 USAGE
 -----
@@ -43,6 +44,15 @@ class LisanApp(rumps.App):
 
         self.toggle_item = rumps.MenuItem("Start", callback=self.toggle)
 
+        self.mode_item = rumps.MenuItem("Mode: Arabic transliteration", callback=lambda _: None)
+        self.transliterate_mode_item = rumps.MenuItem(
+            "Arabic transliteration", callback=self.select_mode
+        )
+        self.polish_mode_item = rumps.MenuItem("Polish (⌘⇧R)", callback=self.select_mode)
+        self.transliterate_mode_item.state = True
+        self.mode_item.add(self.transliterate_mode_item)
+        self.mode_item.add(self.polish_mode_item)
+
         # "Run in" submenu: pick which app lisan is restricted to, live.
         self.app_filter_item = rumps.MenuItem("Run in: All Apps", callback=lambda _: None)
         self.app_filter_option_items = {}
@@ -65,6 +75,8 @@ class LisanApp(rumps.App):
         self.menu = [
             self.toggle_item,
             None,
+            self.mode_item,
+            None,
             self.app_filter_item,
             None,
             self.suggestions_item,
@@ -73,6 +85,7 @@ class LisanApp(rumps.App):
         ]
 
         lisan.set_swap_callback(self.on_swap)
+        lisan.set_polish_status_callback(self.on_polish_status)
 
     # -- Start/Stop -----------------------------------------------------
 
@@ -88,7 +101,30 @@ class LisanApp(rumps.App):
             self.title = "لسان"
             self._clear_suggestions()
 
-    # -- "Run in" app filter ---------------------------------------------
+    # -- Modes and app filter ---------------------------------------------
+
+    def select_mode(self, sender):
+        if sender is self.transliterate_mode_item:
+            lisan.set_mode(lisan.TRANSLITERATE_MODE)
+            self.mode_item.title = "Mode: Arabic transliteration"
+            self.transliterate_mode_item.state = True
+            self.polish_mode_item.state = False
+        else:
+            lisan.set_mode(lisan.POLISH_MODE)
+            self.mode_item.title = "Mode: Polish (⌘⇧R)"
+            self.transliterate_mode_item.state = False
+            self.polish_mode_item.state = True
+            self._clear_suggestions()
+
+    def on_polish_status(self, pending):
+        """Show a small loader while a sentence is being rewritten."""
+        if pending:
+            self.title = "لسان ⏳"
+            self.mode_item.title = "Mode: Polish (working…)"
+        else:
+            self.title = "لسان ✅" if self.listener is not None else "لسان"
+            if lisan.get_mode() == lisan.POLISH_MODE:
+                self.mode_item.title = "Mode: Polish (⌘⇧R)"
 
     def select_app_filter(self, sender):
         name = sender.title
